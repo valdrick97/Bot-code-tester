@@ -264,6 +264,7 @@ fetch('faqData.json')
                 fuzzySet.add(normalizedQuestion); // Add to fuzzy set
             });
         });
+};
 
 // Function to search by name
 function searchByName(input) {
