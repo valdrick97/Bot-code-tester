@@ -236,24 +236,24 @@ fetch('faqData.json')
     .then(response => response.json())
     .then(data => {
         faqData = data.categories.flatMap(category => category.questions);
-        fuzzySet = FuzzySet(faqData.map(qa => normalize(qa.question)));
         faqData.forEach(qa => {
-            faqMap.set(normalize(qa.question), qa.answer, variations: qa.variations ||
-        [] ) });
+            // Add the main question to faqMap
+            faqMap.set(normalize(qa.question), { answer: qa.answer, variations: qa.variations || [] });
 
-         if (qa.variations) {
+            // Add variations to faqMap
+            if (qa.variations) {
                 qa.variations.forEach(variation => {
                     faqMap.set(normalize(variation), { answer: qa.answer, variations: [] });
                 });
             }
 
-          fuzzySet.add(normalize(qa.question));
+            // Add to fuzzySet
+            fuzzySet.add(normalize(qa.question));
             if (qa.variations) {
                 qa.variations.forEach(variation => fuzzySet.add(normalize(variation)));
             }
         });
     })
-        
     .catch(error => console.error('Error loading FAQ data:', error));
 
         // Preprocess data
