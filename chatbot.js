@@ -239,7 +239,7 @@ fetch('faqData.json')
         fuzzySet = FuzzySet(faqData.map(qa => normalize(qa.question)));
         faqData.forEach(qa => {
             faqMap.set(normalize(qa.question), qa.answer, variations: qa.variations ||
-[] });
+        [] ) });
 
          if (qa.variations) {
                 qa.variations.forEach(variation => {
