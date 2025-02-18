@@ -8,7 +8,6 @@
               "variations": ["Break Times", "Swing Shift", "Swing Shift break times"],
               "answer": "I know the current break times for all of the Associates on Swings. Just type in their first and last name and ill bring up their break times!"
             },
-            // Need to work on having the layout for the break times be outputted right
             {
           "question": "Michelle O'Conner",
           "answer": {
