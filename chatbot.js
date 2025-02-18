@@ -235,7 +235,10 @@ document.getElementById('chat-input').addEventListener('keypress', function (e) 
 fetch('faqData.json')
     .then(response => response.json())
     .then(data => {
+        // Flatten the FAQ data
         faqData = data.categories.flatMap(category => category.questions);
+
+        // Process each question-answer pair
         faqData.forEach(qa => {
             // Add the main question to faqMap
             faqMap.set(normalize(qa.question), { answer: qa.answer, variations: qa.variations || [] });
@@ -253,10 +256,8 @@ fetch('faqData.json')
                 qa.variations.forEach(variation => fuzzySet.add(normalize(variation)));
             }
         });
-    })
-    .catch(error => console.error('Error loading FAQ data:', error));
 
-        // Preprocess data
+        // Preprocess data (this is now inside the .then() block)
         data.categories.forEach(category => {
             category.questions.forEach(qa => {
                 const normalizedQuestion = normalize(qa.question);
@@ -264,6 +265,10 @@ fetch('faqData.json')
                 fuzzySet.add(normalizedQuestion); // Add to fuzzy set
             });
         });
+
+        console.log('FAQ data loaded and preprocessed successfully!');
+    })
+    .catch(error => console.error('Error loading FAQ data:', error));
 
 // Function to search by name
 function searchByName(input) {
