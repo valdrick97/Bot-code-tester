@@ -101,7 +101,9 @@ function findBestMatch(userInput) {
 
     // Try an exact match first
     if (faqMap.has(normalizedInput)) {
-        return faqMap.get(normalizedInput);
+        const result = faqMap.get(normalizedInput);
+        // Check if the result is an object with an 'answer' property
+        return typeof result === 'object' && result.answer ? result.answer : result;
     }
 
     // Check variations
@@ -115,11 +117,14 @@ function findBestMatch(userInput) {
     const fuzzyMatches = fuzzySet.get(normalizedInput);
     if (fuzzyMatches && fuzzyMatches.length > 0 && fuzzyMatches[0][0] > 0.7) {
         const bestMatch = fuzzyMatches[0][1]; // Get the best match
-        return faqMap.get(bestMatch);
+        const result = faqMap.get(bestMatch);
+        // Check if the result is an object with an 'answer' property
+        return typeof result === 'object' && result.answer ? result.answer : result;
     }
 
     return "I couldn't find a matching answer. Can you rephrase your question?";
 }
+
 
 // Handle user input and bot response
 function sendMessage() {
@@ -235,18 +240,15 @@ document.getElementById('chat-input').addEventListener('keypress', function (e) 
 fetch('faqData.json')
     .then(response => response.json())
     .then(data => {
-        // Flatten the FAQ data
         faqData = data.categories.flatMap(category => category.questions);
-
-        // Process each question-answer pair
         faqData.forEach(qa => {
             // Add the main question to faqMap
-            faqMap.set(normalize(qa.question), { answer: qa.answer, variations: qa.variations || [] });
+            faqMap.set(normalize(qa.question), qa.answer);
 
             // Add variations to faqMap
             if (qa.variations) {
                 qa.variations.forEach(variation => {
-                    faqMap.set(normalize(variation), { answer: qa.answer, variations: [] });
+                    faqMap.set(normalize(variation), qa.answer); // Store only the answer
                 });
             }
 
@@ -255,15 +257,6 @@ fetch('faqData.json')
             if (qa.variations) {
                 qa.variations.forEach(variation => fuzzySet.add(normalize(variation)));
             }
-        });
-
-        // Preprocess data (this is now inside the .then() block)
-        data.categories.forEach(category => {
-            category.questions.forEach(qa => {
-                const normalizedQuestion = normalize(qa.question);
-                faqMap.set(normalizedQuestion, qa.answer);
-                fuzzySet.add(normalizedQuestion); // Add to fuzzy set
-            });
         });
 
         console.log('FAQ data loaded and preprocessed successfully!');
