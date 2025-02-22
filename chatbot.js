@@ -127,7 +127,7 @@ function findBestMatch(userInput) {
 
 // Function to submit data to Google Form
 async function submitToGoogleForm(employeeId, confirmationNumber) {
-    const FORM_URL = "https://docs.google.com/forms/d/e/1FAIpQLSds2HGBadOLjPgsTR4w_8lmz-rrTmVTLQFeaQx_V1e7Sln5gA/viewform?usp=header/formResponse";
+    const FORM_URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSds2HGBadOLjPgsTR4w_8lmz-rrTmVTLQFeaQx_V1e7Sln5gA/formResponse";
     const EMPLOYEE_ID_ENTRY = "entry.792089064"; // Replace with actual entry ID for Employee ID
     const CONFIRMATION_NUMBER_ENTRY = "entry.683466226"; // Replace with actual entry ID for Confirmation Number
 
